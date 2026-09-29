@@ -1,0 +1,4 @@
+dpkt>=1.9.8
+numpy>=1.26
+scipy>=1.11
+pytest>=8
