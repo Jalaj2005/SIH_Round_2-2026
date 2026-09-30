@@ -11,6 +11,7 @@ __pycache__/
 demo-output/
 *.pcap
 *.pcapng
-sentinel-dashboard/data/alerts.jsonl
-sentinel-dashboard/data/telemetry.json
+vigilant-dashboard/data/alerts.jsonl
+vigilant-dashboard/data/telemetry.json
+vigilant-dashboard/data/.*.tmp
 threat-intel-fusion/data/*.db

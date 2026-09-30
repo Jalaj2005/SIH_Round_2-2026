@@ -7,7 +7,7 @@ emits Section 6 alerts (`threat_class: "DGA Domain"`).
     det = DGADetector()                                   # heuristic mode, works offline
     det = DGADetector(model_path="models/dga_model.joblib")   # ML mode after training
     alert = det.process_dns(rec)     # rec: {"domain", "src_ip", "dst_ip", ...}  -> alert dict or None
-    if alert: write_alert(alert)     # sentinel-dashboard core.writer
+    if alert: write_alert(alert)     # vigilant-dashboard core.writer
 
 ## How it decides
 Per name (second-level label): trigram "English-likeness", dictionary word coverage, consonant runs, entropy, length,

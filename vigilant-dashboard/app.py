@@ -1,4 +1,4 @@
-"""NTRO Passive Cyber-Threat Sentinel - Operations Console.
+"""NTRO Vigilant - Passive Network Threat Operations Console.
 Run:  streamlit run app.py
 """
 import streamlit as st
@@ -7,7 +7,7 @@ import config
 from components import alert_feed, charts, forensic_drawer, kpi_bar, ti_panel
 from core.alert_store import AlertStore
 
-st.set_page_config(page_title="Sentinel Ops Console", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="Vigilant Ops Console", page_icon="🛡️", layout="wide")
 
 
 @st.cache_resource
@@ -19,7 +19,7 @@ store = get_store()
 
 # ---- sidebar -------------------------------------------------------
 with st.sidebar:
-    st.title("🛡️ Sentinel")
+    st.title("🛡️ Vigilant")
     st.caption("SIH 26145 | PASSIVE_UNIDIRECTIONAL enclave")
     st.markdown(f"**Data source:** `{store.mode}`")
     freeze = st.toggle("Freeze feed (inspect)", value=False)
@@ -28,7 +28,7 @@ with st.sidebar:
     if store.rejected:
         st.warning(f"{store.rejected} malformed alert(s) rejected")
 
-st.title("Passive NDR Operations Console")
+st.title("Vigilant Passive NDR Operations Console")
 
 
 def live_view() -> None:

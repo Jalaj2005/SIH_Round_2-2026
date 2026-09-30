@@ -1,4 +1,4 @@
-# Sentinel Ops Console (Member 6 - Dashboard)
+# Vigilant Ops Console (Member 6 - Dashboard)
 
 Live operations console for the SIH 26145 passive NDR pipeline: Gbps / flows-per-sec, alert latency,
 TI cache stats, live alert feed, and a forensic drawer with TreeSHAP attributions.
@@ -6,19 +6,19 @@ TI cache stats, live alert feed, and a forensic drawer with TreeSHAP attribution
 ## Run
     pip install -r requirements.txt
     streamlit run app.py                      # mock data (demo mode)
-    SENTINEL_MODE=file streamlit run app.py   # real pipeline data
+    VIGILANT_MODE=file streamlit run app.py   # real pipeline data
 
 ## Run the integrated pipeline
 From this directory, replay a packet capture through Module 1 and the available local detectors:
 
     python run_pipeline.py path/to/capture.pcap
     python run_pipeline.py path/to/capture.pcap --loop
-    SENTINEL_MODE=file streamlit run app.py
+    VIGILANT_MODE=file streamlit run app.py
 
 The runner writes normalized alerts to `data/alerts.jsonl` and atomically replaces
 `data/telemetry.json`. Integrated detectors are C2 beaconing, DDoS, DGA, DNS tunnelling,
 data exfiltration, reconnaissance/port scan, threat-intel fusion, and TLS malware. Threat intel uses the bundled
-offline sample feed; set `SENTINEL_IOC_DB` to use a persistent IoC database. DNS-tunnelling
+offline sample feed; set `VIGILANT_IOC_DB` to use a persistent IoC database. DNS-tunnelling
 detection scores encoded subdomain patterns, query cadence, uniqueness, and destination popularity.
 
 ## Integration contract (what the pipeline must produce)
@@ -28,7 +28,8 @@ detection scores encoded subdomain patterns, query cadence, uniqueness, and dest
 | `data/telemetry.json` | latest snapshot, overwritten ~1/sec (`data/sample_telemetry.json`) | Module 1 / dispatcher |
 
 Write telemetry atomically (write temp file, then `os.replace`) so the dashboard never reads a half-written file.
-Paths can be changed with `SENTINEL_ALERTS_FILE` / `SENTINEL_TELEMETRY_FILE`.
+Paths can be changed with `VIGILANT_ALERTS_FILE` / `VIGILANT_TELEMETRY_FILE`. Legacy
+`SENTINEL_*` environment variable names remain supported.
 
 Fusion side, minimal example:
 

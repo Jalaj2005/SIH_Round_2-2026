@@ -43,7 +43,7 @@ class OffsetPcapSource:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the local Sentinel detection pipeline over a PCAP")
+    parser = argparse.ArgumentParser(description="Run the local Vigilant detection pipeline over a PCAP")
     parser.add_argument("pcap", help="Path to a .pcap or .pcapng capture")
     parser.add_argument("--speed", type=float, default=0.0, help="Replay speed; 0 processes as fast as possible")
     parser.add_argument("--loop", action="store_true", help="Replay continuously until Ctrl+C")

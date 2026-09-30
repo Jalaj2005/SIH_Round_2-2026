@@ -1,0 +1,8 @@
+{
+  "include": [
+    "vigilant-dashboard"
+  ],
+  "extraPaths": [
+    "packet-parser-feature-extraction"
+  ]
+}

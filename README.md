@@ -1,6 +1,6 @@
-# SIH Round 2: Passive Network Threat Detection
+# Vigilant: Passive Network Threat Detection
 
-This repository contains a passive network-traffic analysis prototype. Module 1 parses packet captures into metadata records, eight detector modules analyze those records, and the Sentinel Streamlit dashboard displays normalized alerts and pipeline telemetry.
+Vigilant is a passive network-traffic analysis prototype. Module 1 parses packet captures into metadata records, eight detector modules analyze those records, and the Vigilant Streamlit dashboard displays normalized alerts and pipeline telemetry.
 
 The system is intended for demonstrations and development. Detection thresholds and bundled sample data are not a substitute for validation against representative, labeled production traffic.
 
@@ -28,7 +28,7 @@ Dashboard pipeline: normalize alerts and write telemetry
     +--> telemetry.json (atomic snapshot)
     |
     v
-Sentinel Streamlit dashboard
+Vigilant Streamlit dashboard
 ```
 
 Module 1 emits DNS and TLS records as they are observed, periodic traffic-window records, and flow records when flows close or expire. The dispatcher routes each record type to the appropriate consumers. The dashboard-side runner connects the available detectors and writes the dashboard's Section 6 alert format.
@@ -46,7 +46,7 @@ Module 1 emits DNS and TLS records as they are observed, periodic traffic-window
 | `recon-detector/` | Horizontal and vertical scan detection. |
 | `threat-intel-fusion/` | Local IoC lookups, early alerts, and confidence fusion. |
 | `tls-malware-detection/` | TLS flow classifier and serialized model. |
-| `sentinel-dashboard/` | Streamlit operations dashboard and integrated PCAP replay runner. |
+| `vigilant-dashboard/` | Vigilant Streamlit operations dashboard and integrated PCAP replay runner. |
 
 Each module also contains its own documentation or tests where applicable; see its README for module-specific details.
 
@@ -60,7 +60,7 @@ python -m venv .venv
 source .venv/bin/activate              # Linux/macOS
 # Windows Git Bash: source .venv/Scripts/activate
 # PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install -r sentinel-dashboard/requirements.txt
+python -m pip install -r vigilant-dashboard/requirements.txt
 ```
 
 The dashboard requirements include dependencies used by the integrated replay path, including Streamlit, pandas, packet parsing, numerical features, and the TLS model runtime.
@@ -70,10 +70,10 @@ The dashboard requirements include dependencies used by the integrated replay pa
 From the repository root:
 
 ```bash
-python -m streamlit run sentinel-dashboard/app.py
+python -m streamlit run vigilant-dashboard/app.py
 ```
 
-By default, `SENTINEL_MODE` is `mock`; the dashboard generates synthetic alerts and telemetry for UI demonstrations. Set `SENTINEL_MODE=file` to have it read files written by the integrated pipeline.
+By default, `VIGILANT_MODE` is `mock`; the dashboard generates synthetic alerts and telemetry for UI demonstrations. Set `VIGILANT_MODE=file` to have it read files written by the integrated pipeline. Existing `SENTINEL_*` environment variables remain supported as fallbacks.
 
 ## Run the Integrated PCAP Demo
 
@@ -87,32 +87,32 @@ python -c "import sys; sys.path.insert(0, 'packet-parser-feature-extraction/tool
 Use two terminals from the repository root. In Terminal 1, start the dashboard in file mode:
 
 ```bash
-export SENTINEL_MODE=file
-python -m streamlit run sentinel-dashboard/app.py --server.port 8502
+export VIGILANT_MODE=file
+python -m streamlit run vigilant-dashboard/app.py --server.port 8502
 ```
 
 In Terminal 2, run one replay:
 
 ```bash
-python sentinel-dashboard/run_pipeline.py demo-output/demo.pcap
+python vigilant-dashboard/run_pipeline.py demo-output/demo.pcap
 ```
 
 For a continuously changing demo, replay the capture repeatedly:
 
 ```bash
-python sentinel-dashboard/run_pipeline.py demo-output/demo.pcap --loop
+python vigilant-dashboard/run_pipeline.py demo-output/demo.pcap --loop
 ```
 
 The dashboard refreshes from its configured files; the runner is the process that produces changes. Press `Ctrl+C` in the replay terminal to stop replaying, and leave the Streamlit terminal running. Open the local URL printed by Streamlit.
 
-The runner writes by default to `sentinel-dashboard/data/alerts.jsonl` and `sentinel-dashboard/data/telemetry.json`. To use different paths, set `SENTINEL_ALERTS_FILE` and `SENTINEL_TELEMETRY_FILE` to the same values for both the dashboard and runner processes. Other settings include `SENTINEL_REFRESH` and `SENTINEL_IOC_DB`.
+The runner writes by default to `vigilant-dashboard/data/alerts.jsonl` and `vigilant-dashboard/data/telemetry.json`. To use different paths, set `VIGILANT_ALERTS_FILE` and `VIGILANT_TELEMETRY_FILE` to the same values for both the dashboard and runner processes. Other settings include `VIGILANT_REFRESH` and `VIGILANT_IOC_DB`.
 
 ## Tests
 
 Run the dashboard and integration tests from the repository root:
 
 ```bash
-python -m pytest sentinel-dashboard/tests -q
+python -m pytest vigilant-dashboard/tests -q
 ```
 
 Module-specific tests and commands are documented in each module. Some test suites expect to be run from their module directory so that its package is on the Python import path.

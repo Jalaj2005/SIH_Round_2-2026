@@ -60,7 +60,7 @@ class DashboardPipeline:
         self.exfil = ExfiltrationDetector()
         self.exfil_evidence = EvidenceGenerator()
         self.recon = ReconDetector()
-        ioc_path = str(ioc_db or os.getenv("SENTINEL_IOC_DB", ":memory:"))
+        ioc_path = str(ioc_db or os.getenv("VIGILANT_IOC_DB", os.getenv("SENTINEL_IOC_DB", ":memory:")))
         if ioc_path != ":memory:":
             Path(ioc_path).parent.mkdir(parents=True, exist_ok=True)
         self.ioc_store = IoCStore(ioc_path)

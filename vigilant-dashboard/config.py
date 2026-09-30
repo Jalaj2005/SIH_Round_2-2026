@@ -5,10 +5,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 
 # mock -> built-in generator (demo / UI dev). file -> tail files written by the pipeline.
-DATA_MODE = os.getenv("SENTINEL_MODE", "mock")
-ALERTS_FILE = Path(os.getenv("SENTINEL_ALERTS_FILE", BASE_DIR / "data" / "alerts.jsonl"))
-TELEMETRY_FILE = Path(os.getenv("SENTINEL_TELEMETRY_FILE", BASE_DIR / "data" / "telemetry.json"))
-REFRESH_SECONDS = float(os.getenv("SENTINEL_REFRESH", "1"))
+DATA_MODE = os.getenv("VIGILANT_MODE", os.getenv("SENTINEL_MODE", "mock"))
+ALERTS_FILE = Path(os.getenv(
+    "VIGILANT_ALERTS_FILE", os.getenv("SENTINEL_ALERTS_FILE", BASE_DIR / "data" / "alerts.jsonl")
+))
+TELEMETRY_FILE = Path(os.getenv(
+    "VIGILANT_TELEMETRY_FILE", os.getenv("SENTINEL_TELEMETRY_FILE", BASE_DIR / "data" / "telemetry.json")
+))
+REFRESH_SECONDS = float(os.getenv("VIGILANT_REFRESH", os.getenv("SENTINEL_REFRESH", "1")))
 
 MAX_ALERTS = 5000
 MAX_TELEMETRY_POINTS = 600
