@@ -1,0 +1,14 @@
+{
+  "alert_id": "ALT-20260929-1094",
+  "timestamp": "2026-09-29T18:45:10.124Z",
+  "severity": "CRITICAL",
+  "threat_class": "Botnet C2 Beaconing",
+  "confidence_score": 0.98,
+  "flow_identifier": {"src_ip": "10.0.4.15", "dst_ip": "198.51.100.89", "src_port": 49812, "dst_port": 443, "protocol": "TCP"},
+  "threat_intelligence": {"cache_hit": true, "ioc_matched": "198.51.100.89", "ioc_category": "Known C2 Destination", "ti_override_applied": true},
+  "supporting_evidence": {
+    "primary_metric": "Lomb-Scargle Periodicity Peak",
+    "feature_attributions": {"ti_reputation_weight": 0.45, "iat_spectral_power": 14.8, "iat_variance": 0.003, "repetition_count": 48}
+  },
+  "system_telemetry": {"processing_latency_ms": 0.85, "path_taken": "EARLY_EXIT_TI_OVERRIDE", "enclave_mode": "PASSIVE_UNIDIRECTIONAL"}
+}
