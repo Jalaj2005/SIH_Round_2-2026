@@ -19,6 +19,16 @@ def test_sample_alert_valid():
     assert validate_alert(raw)["alert_id"] == "ALT-20260929-1094"
 
 
+def test_protocol_values_are_normalized_to_arrow_safe_strings():
+    raw = mock_feed.generate_alert()
+    raw["flow_identifier"]["protocol"] = 6
+
+    alert = validate_alert(raw)
+
+    assert alert["flow_identifier"]["protocol"] == "TCP"
+    assert isinstance(flatten(alert)["proto"], str)
+
+
 def test_rejects_malformed():
     assert validate_alert({"alert_id": "x"}) is None
     assert validate_alert("nope") is None

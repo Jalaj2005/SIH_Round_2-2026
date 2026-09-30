@@ -2,11 +2,10 @@
 Deterministic Unit Tests covering all 18 cases.
 """
 import unittest
-from baseline import RollingTrafficBaseline
-from config import DDoSDetectorConfig
-from detector import DDoSDetector
-from entropy import calculate_shannon_entropy
-
+from ddos_detector.baseline import RollingTrafficBaseline
+from ddos_detector.config import DDoSDetectorConfig
+from ddos_detector.detector import DDoSDetector
+from ddos_detector.entropy import calculate_shannon_entropy
 
 class TestDDoSDetector(unittest.TestCase):
     def setUp(self):

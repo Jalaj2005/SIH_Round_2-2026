@@ -1,0 +1,7 @@
+# heuristic mode needs nothing beyond the standard library
+# ML mode (train.py / model_path) needs:
+numpy
+pandas
+scikit-learn==1.6.1
+joblib
+pytest

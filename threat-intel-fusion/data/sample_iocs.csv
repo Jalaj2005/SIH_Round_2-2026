@@ -1,0 +1,6 @@
+kind,value,category,confidence,source
+ip,198.51.100.89,Known C2 Destination,0.98,demo-feed
+ip,203.0.113.50,Scanner,0.6,demo-feed
+domain,evil-c2.example,Botnet C2 Domain,0.95,demo-feed
+domain,phish.example,Phishing,0.7,demo-feed
+ja3,e7d705a3286e19ea42f587b344ee6865,Malware TLS Client,0.85,demo-feed

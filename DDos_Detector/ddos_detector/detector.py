@@ -19,6 +19,14 @@ class DDoSDetector:
         self.consecutive_suspicious_windows = 0
         self.smoothed_persistence_score = 0.0
 
+    def _safe_float(self, val: Any, default: float = 0.0) -> float:
+        try:
+            if val is None:
+                return default
+            return float(val)
+        except (ValueError, TypeError):
+            return default
+        
     def _normalize_score(self, val: float, min_val: float, max_val: float) -> float:
         if val <= min_val:
             return 0.0
@@ -52,15 +60,15 @@ class DDoSDetector:
         self, features: Dict[str, Any]
     ) -> Tuple[float, List[Dict[str, Any]]]:
         evidence = []
-        unique_src = float(features.get("unique_source_ips", 1))
-        unique_dst = float(features.get("unique_destination_ips", 1))
+        unique_src = self._safe_float(features.get("unique_source_ips", 1))
+        unique_dst = self._safe_float(features.get("unique_destination_ips", 1))
 
         entropy = features.get("source_ip_entropy")
         if entropy is None:
             raw_sources = features.get("source_distribution", {})
             entropy = calculate_shannon_entropy(raw_sources)
         else:
-            entropy = float(entropy)
+            entropy = self._safe_float(entropy)
 
         fanout = unique_src / max(1.0, unique_dst)
 
@@ -95,12 +103,12 @@ class DDoSDetector:
         self, features: Dict[str, Any]
     ) -> Tuple[float, List[Dict[str, Any]]]:
         evidence = []
-        syn_rate = float(features.get("syn_rate", features.get("syn_count", 0.0)))
-        syn_ack = float(features.get("syn_ack_count", 0.0))
-        ack = float(features.get("ack_count", 0.0))
+        syn_rate = self._safe_float(features.get("syn_rate", features.get("syn_count", 0.0)))
+        syn_ack = self._safe_float(features.get("syn_ack_count", 0.0))
+        ack = self._safe_float(features.get("ack_count", 0.0))
         total_packets = max(
             1.0,
-            float(features.get("packets_per_sec", features.get("packet_count", 1.0))),
+            self._safe_float(features.get("packets_per_sec", features.get("packet_count", 1.0))),
         )
 
         syn_ratio = syn_rate / total_packets
@@ -309,7 +317,8 @@ class DDoSDetector:
 
         # Baseline update with poisoning protection
         pps = float(features.get("packets_per_sec", 0.0))
-        self.baseline.update(pps, is_attack=detected)
+        is_attack = detected or rate_score >= 0.5
+        self.baseline.update(pps, is_attack=is_attack)
 
         # 6. Aggregate Evidence
         all_evidence = rate_ev + src_ev + tcp_ev + udp_ev

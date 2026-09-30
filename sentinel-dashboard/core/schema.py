@@ -5,6 +5,18 @@ from typing import Any
 import config
 
 REQUIRED = ("alert_id", "timestamp", "severity", "threat_class", "confidence_score", "flow_identifier")
+_PROTOCOL_NAMES = {1: "ICMP", 6: "TCP", 17: "UDP", 58: "ICMPv6"}
+
+
+def _protocol_name(value: Any) -> str:
+    if isinstance(value, bytes):
+        value = value.decode("ascii", errors="replace")
+    if isinstance(value, int):
+        return _PROTOCOL_NAMES.get(value, str(value))
+    protocol = str(value if value is not None else "?").strip()
+    if protocol.isdecimal():
+        return _PROTOCOL_NAMES.get(int(protocol), protocol)
+    return protocol.upper()
 
 
 def validate_alert(raw: Any) -> dict | None:
@@ -27,7 +39,7 @@ def validate_alert(raw: Any) -> dict | None:
     alert["flow_identifier"] = {
         "src_ip": flow.get("src_ip", "?"), "dst_ip": flow.get("dst_ip", "?"),
         "src_port": flow.get("src_port", 0), "dst_port": flow.get("dst_port", 0),
-        "protocol": flow.get("protocol", "?"),
+        "protocol": _protocol_name(flow.get("protocol", "?")),
     }
     alert.setdefault("threat_intelligence", {})
     alert.setdefault("supporting_evidence", {"primary_metric": "-", "feature_attributions": {}})

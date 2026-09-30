@@ -8,6 +8,19 @@ TI cache stats, live alert feed, and a forensic drawer with TreeSHAP attribution
     streamlit run app.py                      # mock data (demo mode)
     SENTINEL_MODE=file streamlit run app.py   # real pipeline data
 
+## Run the integrated pipeline
+From this directory, replay a packet capture through Module 1 and the available local detectors:
+
+    python run_pipeline.py path/to/capture.pcap
+    python run_pipeline.py path/to/capture.pcap --loop
+    SENTINEL_MODE=file streamlit run app.py
+
+The runner writes normalized alerts to `data/alerts.jsonl` and atomically replaces
+`data/telemetry.json`. Integrated detectors are C2 beaconing, DDoS, DGA, DNS tunnelling,
+data exfiltration, reconnaissance/port scan, threat-intel fusion, and TLS malware. Threat intel uses the bundled
+offline sample feed; set `SENTINEL_IOC_DB` to use a persistent IoC database. DNS-tunnelling
+detection scores encoded subdomain patterns, query cadence, uniqueness, and destination popularity.
+
 ## Integration contract (what the pipeline must produce)
 | File | Format | Writer |
 |---|---|---|

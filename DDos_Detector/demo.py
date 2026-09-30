@@ -1,7 +1,5 @@
-from config import DDoSDetectorConfig
-from detector import DDoSDetector
-
-
+from ddos_detector.detector import DDoSDetector
+from ddos_detector.config import DDoSDetectorConfig
 def run_demo():
     detector = DDoSDetector(DDoSDetectorConfig())
 
